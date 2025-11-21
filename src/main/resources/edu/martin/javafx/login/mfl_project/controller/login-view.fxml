@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Button?>
+<BorderPane
+        xmlns="http://javafx.com/javafx"
+        xmlns:fx="http://javafx.com/fxml"
+        fx:controller="edu.martin.javafx.login.mfl_project.controller.LoginController"
+        prefHeight="400.0" prefWidth="600.0">
+        <center>
+            <AnchorPane BorderPane.alignment="CENTER">
+                <children>
+                    <VBox alignment="CENTER" layoutX="120.0" layoutY="38.0" prefHeight="330.0" prefWidth="360.0" spacing="20.0">
+                        <padding>
+                            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+                        </padding>
+                        <Label text="Inicio de Sesión">
+                                <font>
+                                    <Font name="System Bold" size="24.0" />
+                                </font>
+                                <VBox.margin> //AÑADE UN MARGEN INFERERIOR A 20PX AL LABEL
+                                    <Insets bottom="20.0" />
+                                </VBox.margin>
+                        </Label>
+
+                        <TextField fx:id="nicknameField" promptText="Nickname" prefWidth="280.0">
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            </padding>
+                        </TextField>
+                        <PasswordField fx:id="passwordField" promptText="Contraseña" prefWidth="280.0">
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            </padding>
+                        </PasswordField>
+                        <Button fx:id="loginButton" minWidth="300.0" onAction="#onLoginButtonClick" text="Entrar">
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            </padding>
+                        </Button>
+                    </VBox>
+                </children>
+            </AnchorPane>
+        </center>
+</BorderPane>
