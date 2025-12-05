@@ -12,7 +12,9 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
     @Override
     public boolean validarCredenciales(String username, String password) {
-        String sql = "SELECT * FROM usuarios WHERE nickname = ? AND password = ?";
+
+        String sql = "SELECT * FROM usuarios WHERE username = ? AND password = ?";
+
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -20,8 +22,9 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             pstmt.setString(2, password);
 
             try (ResultSet rs = pstmt.executeQuery()) {
-                return rs.next();
+                return rs.next();    // true si existe al menos una fila
             }
+
         } catch (SQLException e) {
             System.err.println("Error al validar las credenciales del usuario: " + e.getMessage());
             e.printStackTrace();
@@ -31,25 +34,32 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
     @Override
     public Usuario getUsuarioPorUsername(String username) {
-        String sql = "SELECT * FROM usuarios WHERE nickname = ?";
+
+        String sql = "SELECT * FROM usuarios WHERE username = ?";
         Usuario usuario = null;
+
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setString(1, username);
+
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
+
                     usuario = new Usuario(
-                        rs.getInt("usuario_id"),
-                        rs.getString("nickname"),
-                        rs.getString("password"),
-                        rs.getString("nombre")
+                            rs.getInt("id"),
+                            rs.getString("username"),
+                            rs.getString("password"),
+                            rs.getString("nombre")
                     );
                 }
             }
+
         } catch (SQLException e) {
             System.err.println("Error al obtener el usuario: " + e.getMessage());
             e.printStackTrace();
         }
+
         return usuario;
     }
 }

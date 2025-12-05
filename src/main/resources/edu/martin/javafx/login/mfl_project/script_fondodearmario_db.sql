@@ -1,8 +1,8 @@
 =========================================================
 
-DROP DATABASE IF EXISTS FondoDeArmario;
-CREATE DATABASE FondoDeArmario;
-USE FondoDeArmario;
+DROP DATABASE IF EXISTS fondo;
+CREATE DATABASE fondo;
+USE fondo;
 
 =========================================================
 

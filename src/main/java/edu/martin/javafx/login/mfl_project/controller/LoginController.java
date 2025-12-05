@@ -2,6 +2,9 @@ package edu.martin.javafx.login.mfl_project.controller;
 
 
 
+import edu.martin.javafx.login.mfl_project.dao.UsuarioDAO;
+import edu.martin.javafx.login.mfl_project.dao.UsuarioDAOImpl;
+import edu.martin.javafx.login.mfl_project.model.Usuario;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,19 +31,24 @@ public class LoginController implements Initializable {
     @FXML
     private Button loginButton;
 
+    private final UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
 
     @FXML
     protected void onLoginButtonClick(ActionEvent event) throws IOException {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        if (usernameField.getText().equals("") || passwordField.getText().equals("")) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Campos Vacíos");
+        if(usuarioDAO.validarCredenciales(username,password)){
+            Usuario usuario = usuarioDAO.getUsuarioPorUsername(username);
+
+            System.out.println("Login exitoso para el usuario: " + usuario.getNombre());
+            // Aquí puedes agregar la lógica para cambiar a la siguiente vista y pasar el objeto Usuario
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error de autenticación");
             alert.setHeaderText(null);
-            alert.setContentText("Por favor, complete todos los campos.");
+            alert.setContentText("Nombre de usuario o contraseña incorrectos.");
             alert.showAndWait();
-            return;
         }
     }
 
