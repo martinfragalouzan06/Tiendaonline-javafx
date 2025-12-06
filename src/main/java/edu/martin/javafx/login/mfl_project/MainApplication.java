@@ -14,7 +14,7 @@ public class MainApplication extends Application {
 
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
 
-        stage.setTitle("Fondo de Armari");
+        stage.setTitle("Fondo de Armario");
         stage.setScene(scene);
         stage.show();
     }
