@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.martin.javafx.login.mfl_project.controller.MainController"
+            prefWidth="900.0" prefHeight="600.0">
+
+    <top>
+        <HBox spacing="10">
+            <padding>
+                <Insets top="15" right="15" bottom="15" left="15"/>
+            </padding>
+            <children>
+                <Label text="Usuario:"/>
+                <Label fx:id="usuarioLabel" text="(sin usuario)"/>
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <TableView fx:id="tablaPrendas" prefHeight="450.0">
+            <columns>
+                <TableColumn fx:id="colNombre" text="Nombre" prefWidth="200"/>
+                <TableColumn fx:id="colColor" text="Color" prefWidth="150"/>
+                <TableColumn fx:id="colTalla" text="Talla" prefWidth="100"/>
+                <TableColumn fx:id="colCategoria" text="Categoría" prefWidth="200"/>
+            </columns>
+        </TableView>
+    </center>
+
+    <bottom>
+        <HBox spacing="15">
+            <padding>
+                <Insets top="15" right="15" bottom="15" left="15"/>
+            </padding>
+            <children>
+                <Button fx:id="addButton" text="Añadir" onAction="#onAddButtonClick"/>
+                <Button fx:id="editButton" text="Editar" onAction="#onEditButtonClick"/>
+                <Button fx:id="deleteButton" text="Eliminar" onAction="#onDeleteButtonClick"/>
+            </children>
+        </HBox>
+    </bottom>
+
+</BorderPane>

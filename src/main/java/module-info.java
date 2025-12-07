@@ -8,11 +8,15 @@ module edu.martin.javafx.login.mfl_project {
     exports edu.martin.javafx.login.mfl_project;
 
     opens edu.martin.javafx.login.mfl_project.controller to javafx.fxml;
-    exports  edu.martin.javafx.login.mfl_project.controller;
+    exports edu.martin.javafx.login.mfl_project.controller;
 
     opens edu.martin.javafx.login.mfl_project.model;
-    exports  edu.martin.javafx.login.mfl_project.model;
+    exports edu.martin.javafx.login.mfl_project.model;
 
     opens edu.martin.javafx.login.mfl_project.db;
     exports edu.martin.javafx.login.mfl_project.db;
+
+
+    opens edu.martin.javafx.login.mfl_project.dao;
+    exports edu.martin.javafx.login.mfl_project.dao;
 }
