@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.martin.javafx.login.mfl_project.controller.PrendaController"
+            prefWidth="500.0" prefHeight="420.0">
+
+    <center>
+        <GridPane hgap="10" vgap="10">
+            <padding>
+                <Insets top="15" right="15" bottom="15" left="15"/>
+            </padding>
+
+            <children>
+                <Label text="Nombre:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="nombreField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <Label text="Color:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <TextField fx:id="colorField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                <Label text="Talla:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <TextField fx:id="tallaField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                <Label text="Categoría:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <ComboBox fx:id="categoriaCombo" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                <CheckBox fx:id="favoritaCheck" text="Prenda favorita"
+                          GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+                <Label text="Temporada:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                <HBox spacing="10" GridPane.rowIndex="5" GridPane.columnIndex="1">
+                    <children>
+                        <RadioButton fx:id="veranoRadio" text="Verano"/>
+                        <RadioButton fx:id="inviernoRadio" text="Invierno"/>
+                    </children>
+                </HBox>
+
+                <Label text="Nivel de uso:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+                <VBox spacing="5" GridPane.rowIndex="6" GridPane.columnIndex="1">
+                    <children>
+                        <Slider fx:id="usoSlider" min="0" max="10" majorTickUnit="1"
+                                showTickMarks="true" showTickLabels="true"/>
+                        <Label fx:id="usoLabel" text="0"/>
+                    </children>
+                </VBox>
+            </children>
+        </GridPane>
+    </center>
+
+    <bottom>
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <padding>
+                <Insets top="10" right="15" bottom="10" left="15"/>
+            </padding>
+            <children>
+                <Button fx:id="guardarButton" text="Guardar" onAction="#guardarRopa"/>
+                <Button fx:id="cancelarButton" text="Cancelar" onAction="#cancelarRopa"/>
+            </children>
+        </HBox>
+    </bottom>
+
+</BorderPane>

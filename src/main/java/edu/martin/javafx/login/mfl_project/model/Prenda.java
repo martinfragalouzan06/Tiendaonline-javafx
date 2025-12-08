@@ -2,15 +2,12 @@ package edu.martin.javafx.login.mfl_project.model;
 
 public class Prenda {
 
-
     private int id;
     private String nombre;
     private String color;
     private String talla;
     private int usuarioId;
     private Categoria categoria;
-
-    public Prenda() {}
 
     public Prenda(int id, String nombre, String color, String talla, int usuarioId, Categoria categoria) {
         this.id = id;
@@ -20,6 +17,16 @@ public class Prenda {
         this.usuarioId = usuarioId;
         this.categoria = categoria;
     }
+
+    public Prenda(String nombre, String color, String talla, int usuarioId, Categoria categoria) {
+        this.nombre = nombre;
+        this.color = color;
+        this.talla = talla;
+        this.usuarioId = usuarioId;
+        this.categoria = categoria;
+    }
+
+    public Prenda(){}
 
     public int getId() {
         return id;

@@ -22,7 +22,7 @@
     </top>
 
     <center>
-        <TableView fx:id="tablaPrendas" prefHeight="450.0">
+        <TableView fx:id="tablaPrendas">
             <columns>
                 <TableColumn fx:id="colNombre" text="Nombre" prefWidth="200"/>
                 <TableColumn fx:id="colColor" text="Color" prefWidth="150"/>
@@ -38,9 +38,9 @@
                 <Insets top="15" right="15" bottom="15" left="15"/>
             </padding>
             <children>
-                <Button fx:id="addButton" text="Añadir" onAction="#onAddButtonClick"/>
-                <Button fx:id="editButton" text="Editar" onAction="#onEditButtonClick"/>
-                <Button fx:id="deleteButton" text="Eliminar" onAction="#onDeleteButtonClick"/>
+                <Button fx:id="addButton" text="Añadir" onAction="#anadirRopa"/>
+                <Button fx:id="editButton" text="Editar" onAction="#editarRopa"/>
+                <Button fx:id="deleteButton" text="Eliminar" onAction="#borrarRopa"/>
             </children>
         </HBox>
     </bottom>

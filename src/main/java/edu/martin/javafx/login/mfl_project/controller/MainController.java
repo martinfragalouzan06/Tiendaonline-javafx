@@ -8,13 +8,18 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -37,18 +42,9 @@ public class MainController implements Initializable {
     @FXML
     private TableColumn<Prenda, String> colCategoria;
 
-    @FXML
-    private Button addButton;
-
-    @FXML
-    private Button editButton;
-
-    @FXML
-    private Button deleteButton;
-
     private final PrendaDAO prendaDAO = new PrendaDAOImpl();
     private Usuario usuarioActual;
-    private final ObservableList<Prenda> prendasObservable = FXCollections.observableArrayList();
+    private final ObservableList<Prenda> prendas = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -64,61 +60,83 @@ public class MainController implements Initializable {
                 )
         );
 
-        tablaPrendas.setItems(prendasObservable);
+        tablaPrendas.setItems(prendas);
     }
 
     public void initData(Usuario usuario) {
         this.usuarioActual = usuario;
         usuarioLabel.setText(usuario.getNombre());
-        cargarPrendasUsuario();
+        cargarRopaUsuario();
     }
 
-    private void cargarPrendasUsuario() {
-        prendasObservable.clear();
-        List<Prenda> prendas = prendaDAO.getPrendasPorUsuario(usuarioActual.getId());
-        prendasObservable.addAll(prendas);
-    }
-
-    @FXML
-    private void onAddButtonClick() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Añadir prenda");
-        alert.setHeaderText(null);
-        alert.setContentText("Funcionalidad de añadir prenda pendiente de implementar.");
-        alert.showAndWait();
+    private void cargarRopaUsuario() {
+        prendas.clear();
+        List<Prenda> lista = prendaDAO.getPrendasPorUsuario(usuarioActual.getId());
+        prendas.addAll(lista);
     }
 
     @FXML
-    private void onEditButtonClick() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Editar prenda");
-        alert.setHeaderText(null);
-        alert.setContentText("Funcionalidad de editar prenda pendiente de implementar.");
-        alert.showAndWait();
+    private void anadirRopa() {
+        abrirFormularioRopa(null);
     }
 
     @FXML
-    private void onDeleteButtonClick() {
+    private void editarRopa() {
         Prenda seleccionada = tablaPrendas.getSelectionModel().getSelectedItem();
-
         if (seleccionada == null) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Eliminar prenda");
-            alert.setHeaderText(null);
-            alert.setContentText("Selecciona una prenda para eliminar.");
-            alert.showAndWait();
+            mostrarAviso("Editar prenda", "Selecciona una prenda para editar.");
+            return;
+        }
+        abrirFormularioRopa(seleccionada);
+    }
+
+    @FXML
+    private void borrarRopa() {
+        Prenda seleccionada = tablaPrendas.getSelectionModel().getSelectedItem();
+        if (seleccionada == null) {
+            mostrarAviso("Eliminar prenda", "Selecciona una prenda para eliminar.");
             return;
         }
 
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacion.setTitle("Confirmar eliminación");
         confirmacion.setHeaderText(null);
-        confirmacion.setContentText("¿Seguro que quieres eliminar la prenda \"" + seleccionada.getNombre() + "\"?");
-        Optional<ButtonType> resultado = confirmacion.showAndWait();
-
-        if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+        confirmacion.setContentText("¿Seguro que quieres borrar \"" + seleccionada.getNombre() + "\"?");
+        if (confirmacion.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
             prendaDAO.eliminar(seleccionada.getId());
-            cargarPrendasUsuario();
+            cargarRopaUsuario();
         }
+    }
+
+    private void abrirFormularioRopa(Prenda prenda) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/edu/martin/javafx/login/mfl_project/prenda-view.fxml")
+            );
+            Parent root = loader.load();
+
+            PrendaController controller = loader.getController();
+            controller.cargarDatos(usuarioActual, prenda);
+
+            Stage ventana = new Stage();
+            ventana.initModality(Modality.WINDOW_MODAL);
+            ventana.initOwner(tablaPrendas.getScene().getWindow());
+            ventana.setScene(new Scene(root));
+            ventana.setTitle(prenda == null ? "Añadir prenda" : "Editar prenda");
+            ventana.showAndWait();
+
+            cargarRopaUsuario();
+
+        } catch (IOException e) {
+            mostrarAviso("Error", "No se ha podido abrir el formulario.");
+        }
+    }
+
+    private void mostrarAviso(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 }
