@@ -97,3 +97,29 @@ INSERT INTO prenda_evento (prenda_id, evento_id) VALUES
                                                      (1, 2),  -- Camiseta Roja → Fiesta
                                                      (2, 1),  -- Pantalón Azul → Trabajo
                                                      (3, 3);  -- Chaqueta Negra → Cena
+
+=========================================================
+
+CREATE TABLE etiquetas (
+                           id INT AUTO_INCREMENT PRIMARY KEY,
+                           nombre VARCHAR(50) NOT NULL UNIQUE
+);
+
+=========================================================
+
+CREATE TABLE prenda_etiqueta (
+                                 prenda_id INT NOT NULL,
+                                 etiqueta_id INT NOT NULL,
+                                 PRIMARY KEY (prenda_id, etiqueta_id),
+                                 FOREIGN KEY (prenda_id) REFERENCES prendas(id) ON DELETE CASCADE,
+                                 FOREIGN KEY (etiqueta_id) REFERENCES etiquetas(id) ON DELETE CASCADE
+);
+
+=========================================================
+
+INSERT INTO etiquetas (nombre) VALUES
+                                   ('Trabajo'),
+                                   ('Fiesta'),
+                                   ('Deporte'),
+                                   ('Invierno'),
+                                   ('Verano');
