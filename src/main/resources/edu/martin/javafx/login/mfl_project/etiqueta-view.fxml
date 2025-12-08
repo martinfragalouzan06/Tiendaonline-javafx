@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.martin.javafx.login.mfl_project.controller.EtiquetaController"
+            prefWidth="600" prefHeight="400">
+
+    <top>
+        <HBox spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <children>
+                <Label text="Prenda:"/>
+                <Label fx:id="prendaLabel" text="(sin prenda)"/>
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <HBox spacing="20">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+
+            <children>
+                <VBox spacing="10">
+                    <children>
+                        <Label text="Etiquetas disponibles:"/>
+                        <ListView fx:id="listaDisponibles" prefWidth="220" prefHeight="260"/>
+                    </children>
+                </VBox>
+
+                <VBox spacing="10" alignment="CENTER">
+                    <children>
+                        <Button text=">>" onAction="#agregarEtiqueta"/>
+                        <Button text="<<" onAction="#quitarEtiqueta"/>
+                    </children>
+                </VBox>
+
+                <VBox spacing="10">
+                    <children>
+                        <Label text="Etiquetas de la prenda:"/>
+                        <ListView fx:id="listaDePrenda" prefWidth="220" prefHeight="260"/>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </center>
+
+    <bottom>
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <children>
+                <Button text="Cerrar" onAction="#cerrarVentana"/>
+            </children>
+        </HBox>
+    </bottom>
+
+</BorderPane>
