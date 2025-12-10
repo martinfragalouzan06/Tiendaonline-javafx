@@ -14,19 +14,19 @@ Gestión de prendas
 
 Añadir, editar y eliminar prendas.
 
-Atributos de cada prenda: nombre, color, talla y categoría.
+Atributos: nombre, color, talla, categoría.
 
-Visualización en una tabla mediante JavaFX TableView.
+Visualización en tabla JavaFX TableView.
 
 Contador automático del número de etiquetas asociadas.
 
 Gestión de etiquetas
 
-Cada prenda puede tener múltiples etiquetas.
+Cada prenda puede tener varias etiquetas.
 
-Interfaz para asignar y desasignar etiquetas mediante listas.
+Interfaz para asignar y desasignar etiquetas mediante dos listas.
 
-Relación muchos-a-muchos gestionada mediante la tabla intermedia prenda_etiqueta.
+Relación muchos-a-muchos gestionada mediante la tabla prenda_etiqueta.
 
 Tecnologías utilizadas
 
@@ -36,9 +36,9 @@ JavaFX 21
 
 MySQL 8+
 
-JDBC (mysql-connector-j)
+JDBC
 
-IntelliJ IDEA (entorno recomendado)
+IntelliJ IDEA
 
 Estructura de la base de datos
 
@@ -54,14 +54,14 @@ etiquetas
 
 prenda_etiqueta
 
-El proyecto incluye un script SQL para crear todas las tablas necesarias.
+Incluye script SQL para crear las tablas.
 
 Instalación y ejecución
 
-Crear la base de datos ejecutando el archivo SQL proporcionado.
+Crear la base de datos ejecutando el script SQL incluido.
 
-Ajustar la conexión a MySQL en la clase DatabaseConnection.
+Configurar la clase DatabaseConnection con tus credenciales MySQL.
 
-Configurar las librerías JavaFX en el proyecto.
+Asegurar que JavaFX está configurado en el IDE.
 
-Ejecutar la clase MainApplication para iniciar la aplicación.
+Ejecutar la clase MainApplication.
