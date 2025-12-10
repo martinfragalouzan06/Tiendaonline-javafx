@@ -6,27 +6,21 @@ public class Prenda {
     private String nombre;
     private String color;
     private String talla;
-    private int usuarioId;
     private Categoria categoria;
 
-    public Prenda(int id, String nombre, String color, String talla, int usuarioId, Categoria categoria) {
+    private int cantidadEtiquetas;
+    private String etiquetasResumen;
+
+    public Prenda(int id, String nombre, String color, String talla, Categoria categoria) {
         this.id = id;
         this.nombre = nombre;
         this.color = color;
         this.talla = talla;
-        this.usuarioId = usuarioId;
         this.categoria = categoria;
     }
 
-    public Prenda(String nombre, String color, String talla, int usuarioId, Categoria categoria) {
-        this.nombre = nombre;
-        this.color = color;
-        this.talla = talla;
-        this.usuarioId = usuarioId;
-        this.categoria = categoria;
+    public Prenda() {
     }
-
-    public Prenda(){}
 
     public int getId() {
         return id;
@@ -60,19 +54,32 @@ public class Prenda {
         this.talla = talla;
     }
 
-    public int getUsuarioId() {
-        return usuarioId;
-    }
-
-    public void setUsuarioId(int usuarioId) {
-        this.usuarioId = usuarioId;
-    }
-
     public Categoria getCategoria() {
         return categoria;
     }
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
+    }
+
+    public int getCantidadEtiquetas() {
+        return cantidadEtiquetas;
+    }
+
+    public void setCantidadEtiquetas(int cantidadEtiquetas) {
+        this.cantidadEtiquetas = cantidadEtiquetas;
+    }
+
+    public String getEtiquetasResumen() {
+        return etiquetasResumen;
+    }
+
+    public void setEtiquetasResumen(String etiquetasResumen) {
+        this.etiquetasResumen = etiquetasResumen;
+    }
+
+    @Override
+    public String toString() {
+        return nombre;
     }
 }

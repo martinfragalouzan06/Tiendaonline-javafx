@@ -12,11 +12,12 @@ public class EtiquetaDAOImpl implements EtiquetaDAO {
     @Override
     public List<Etiqueta> getAll() {
         List<Etiqueta> lista = new ArrayList<>();
-        String sql = "SELECT * FROM etiquetas ORDER BY nombre";
+
+        String sql = "SELECT id, nombre FROM etiquetas ORDER BY nombre";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pst = conn.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Etiqueta e = new Etiqueta(
@@ -27,34 +28,42 @@ public class EtiquetaDAOImpl implements EtiquetaDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("Error al obtener etiquetas: " + e.getMessage());
+            throw new RuntimeException(e);
         }
 
         return lista;
     }
 
     @Override
-    public Etiqueta getById(int id) {
-        String sql = "SELECT * FROM etiquetas WHERE id = ?";
-        Etiqueta et = null;
+    public List<Etiqueta> getEtiquetasDePrenda(int prendaId) {
+        List<Etiqueta> lista = new ArrayList<>();
+
+        String sql = """
+                SELECT e.id, e.nombre
+                FROM etiquetas e
+                JOIN prenda_etiqueta pe ON pe.etiqueta_id = e.id
+                WHERE pe.prenda_id = ?
+                ORDER BY e.nombre
+                """;
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pst = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            pst.setInt(1, id);
-            try (ResultSet rs = pst.executeQuery()) {
-                if (rs.next()) {
-                    et = new Etiqueta(
+            stmt.setInt(1, prendaId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Etiqueta e = new Etiqueta(
                             rs.getInt("id"),
                             rs.getString("nombre")
                     );
+                    lista.add(e);
                 }
             }
 
         } catch (SQLException e) {
-            System.out.println("Error al obtener etiqueta por id: " + e.getMessage());
+            throw new RuntimeException(e);
         }
 
-        return et;
+        return lista;
     }
 }

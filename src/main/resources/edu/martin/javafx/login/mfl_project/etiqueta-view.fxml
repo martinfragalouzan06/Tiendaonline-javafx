@@ -28,6 +28,7 @@
             </padding>
 
             <children>
+
                 <VBox spacing="10">
                     <children>
                         <Label text="Etiquetas disponibles:"/>
@@ -37,8 +38,8 @@
 
                 <VBox spacing="10" alignment="CENTER">
                     <children>
-                        <Button text=">>" onAction="#agregarEtiqueta"/>
-                        <Button text="<<" onAction="#quitarEtiqueta"/>
+                        <Button text="&gt;&gt;" onAction="#agregarEtiqueta"/>
+                        <Button text="&lt;&lt;" onAction="#quitarEtiqueta"/>
                     </children>
                 </VBox>
 
@@ -48,6 +49,7 @@
                         <ListView fx:id="listaDePrenda" prefWidth="220" prefHeight="260"/>
                     </children>
                 </VBox>
+
             </children>
         </HBox>
     </center>

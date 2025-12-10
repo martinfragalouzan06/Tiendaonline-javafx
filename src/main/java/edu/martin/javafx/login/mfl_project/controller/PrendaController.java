@@ -7,74 +7,78 @@ import edu.martin.javafx.login.mfl_project.dao.PrendaDAOImpl;
 import edu.martin.javafx.login.mfl_project.model.Categoria;
 import edu.martin.javafx.login.mfl_project.model.Prenda;
 import edu.martin.javafx.login.mfl_project.model.Usuario;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.List;
 
-public class PrendaController implements Initializable {
+public class PrendaController {
 
-    @FXML private TextField nombreField;
-    @FXML private TextField colorField;
-    @FXML private TextField tallaField;
-    @FXML private ComboBox<Categoria> categoriaCombo;
-    @FXML private CheckBox favoritaCheck;
-    @FXML private RadioButton veranoRadio;
-    @FXML private RadioButton inviernoRadio;
-    @FXML private Slider usoSlider;
-    @FXML private Label usoLabel;
-    @FXML private Button guardarButton;
-    @FXML private Button cancelarButton;
+    @FXML
+    private TextField nombreField;
 
-    private final CategoriaDAO categoriaDAO = new CategoriaDAOImpl();
+    @FXML
+    private TextField colorField;
+
+    @FXML
+    private TextField tallaField;
+
+    @FXML
+    private ComboBox<Categoria> categoriaCombo;
+
+    @FXML
+    private Button guardarButton;
+
     private final PrendaDAO prendaDAO = new PrendaDAOImpl();
+    private final CategoriaDAO categoriaDAO = new CategoriaDAOImpl();
+
+    private final ObservableList<Categoria> categorias = FXCollections.observableArrayList();
 
     private Usuario usuarioActual;
     private Prenda prendaActual;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        categoriaCombo.getItems().addAll(categoriaDAO.getAll());
-
-        ToggleGroup grupoTemporada = new ToggleGroup();
-        veranoRadio.setToggleGroup(grupoTemporada);
-        inviernoRadio.setToggleGroup(grupoTemporada);
-
-        usoSlider.valueProperty().addListener((obs, oldVal, newVal) ->
-                usoLabel.setText(String.valueOf(newVal.intValue()))
-        );
+    @FXML
+    private void initialize() {
+        List<Categoria> lista = categoriaDAO.getAll();
+        categorias.setAll(lista);
+        categoriaCombo.setItems(categorias);
     }
 
     public void cargarDatos(Usuario usuario, Prenda prenda) {
-        this.usuarioActual = usuario;
-        this.prendaActual = prenda;
+        usuarioActual = usuario;
+        prendaActual = prenda;
 
         if (prenda != null) {
             nombreField.setText(prenda.getNombre());
             colorField.setText(prenda.getColor());
             tallaField.setText(prenda.getTalla());
-            categoriaCombo.getSelectionModel().select(prenda.getCategoria());
+            if (prenda.getCategoria() != null) {
+                categoriaCombo.getSelectionModel().select(prenda.getCategoria());
+            }
         }
     }
 
     @FXML
     private void guardarRopa() {
-        String nombre = nombreField.getText();
-        String color = colorField.getText();
-        String talla = tallaField.getText();
+        String nombre = nombreField.getText().trim();
+        String color = colorField.getText().trim();
+        String talla = tallaField.getText().trim();
         Categoria categoria = categoriaCombo.getSelectionModel().getSelectedItem();
 
-        if (nombre.isBlank() || color.isBlank() || categoria == null) {
-            alerta("Faltan datos", "Rellena nombre, color y categoría.");
+        if (nombre.isEmpty() || color.isEmpty() || talla.isEmpty() || categoria == null) {
+            Alert a = new Alert(Alert.AlertType.WARNING);
+            a.setHeaderText(null);
+            a.setContentText("Rellena todos los campos.");
+            a.showAndWait();
             return;
         }
 
         if (prendaActual == null) {
-            Prenda nueva = new Prenda(nombre, color, talla, usuarioActual.getId(), categoria);
-            prendaDAO.insertar(nueva);
+            Prenda nueva = new Prenda(0, nombre, color, talla, categoria);
+            prendaDAO.insertar(nueva, usuarioActual.getId());
         } else {
             prendaActual.setNombre(nombre);
             prendaActual.setColor(color);
@@ -83,24 +87,16 @@ public class PrendaController implements Initializable {
             prendaDAO.actualizar(prendaActual);
         }
 
-        cerrar();
+        cerrarVentana();
     }
 
     @FXML
-    private void cancelarRopa() {
-        cerrar();
+    private void cancelar() {
+        cerrarVentana();
     }
 
-    private void cerrar() {
-        Stage stage = (Stage) cancelarButton.getScene().getWindow();
+    private void cerrarVentana() {
+        Stage stage = (Stage) guardarButton.getScene().getWindow();
         stage.close();
-    }
-
-    private void alerta(String titulo, String msg) {
-        Alert a = new Alert(Alert.AlertType.WARNING);
-        a.setTitle(titulo);
-        a.setHeaderText(null);
-        a.setContentText(msg);
-        a.showAndWait();
     }
 }

@@ -7,13 +7,11 @@
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="edu.martin.javafx.login.mfl_project.controller.MainController"
-            prefWidth="900.0" prefHeight="600.0">
+            prefWidth="1100" prefHeight="600">
 
     <top>
-        <HBox spacing="10">
-            <padding>
-                <Insets top="15" right="15" bottom="15" left="15"/>
-            </padding>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
             <children>
                 <Label text="Usuario:"/>
                 <Label fx:id="usuarioLabel" text="(sin usuario)"/>
@@ -22,27 +20,32 @@
     </top>
 
     <center>
-        <TableView fx:id="tablaPrendas">
-            <columns>
-                <TableColumn fx:id="colNombre" text="Nombre" prefWidth="200"/>
-                <TableColumn fx:id="colColor" text="Color" prefWidth="150"/>
-                <TableColumn fx:id="colTalla" text="Talla" prefWidth="100"/>
-                <TableColumn fx:id="colCategoria" text="Categoría" prefWidth="200"/>
-            </columns>
-        </TableView>
-    </center>
+        <HBox spacing="10">
+            <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
 
-    <bottom>
-        <HBox spacing="15">
-            <padding>
-                <Insets top="15" right="15" bottom="15" left="15"/>
-            </padding>
             <children>
-                <Button fx:id="addButton" text="Añadir" onAction="#anadirRopa"/>
-                <Button fx:id="editButton" text="Editar" onAction="#editarRopa"/>
-                <Button fx:id="deleteButton" text="Eliminar" onAction="#borrarRopa"/>
+                <TableView fx:id="tablaPrendas" HBox.hgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colNombre" text="Nombre" prefWidth="150"/>
+                        <TableColumn fx:id="colColor" text="Color" prefWidth="120"/>
+                        <TableColumn fx:id="colTalla" text="Talla" prefWidth="80"/>
+                        <TableColumn fx:id="colCategoria" text="Categoría" prefWidth="150"/>
+                        <TableColumn fx:id="colNumEtiquetas" text="Nº etiquetas" prefWidth="100"/>
+                        <TableColumn fx:id="colEtiquetas" text="Etiquetas" prefWidth="300"/>
+                    </columns>
+                </TableView>
+
+                <VBox spacing="10" alignment="TOP_CENTER">
+                    <children>
+                        <Button text="Añadir" prefWidth="120" onAction="#anadirRopa"/>
+                        <Button text="Editar" prefWidth="120" onAction="#editarRopa"/>
+                        <Button text="Eliminar" prefWidth="120" onAction="#borrarRopa"/>
+                        <Separator prefWidth="120"/>
+                        <Button text="Etiquetas" prefWidth="120" onAction="#gestionarEtiquetas"/>
+                    </children>
+                </VBox>
             </children>
         </HBox>
-    </bottom>
+    </center>
 
 </BorderPane>

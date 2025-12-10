@@ -8,5 +8,5 @@ public interface EtiquetaDAO {
 
     List<Etiqueta> getAll();
 
-    Etiqueta getById(int id);
+    List<Etiqueta> getEtiquetasDePrenda(int prendaId);
 }

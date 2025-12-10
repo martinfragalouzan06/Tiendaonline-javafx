@@ -1,7 +1,10 @@
 package edu.martin.javafx.login.mfl_project.controller;
 
+import edu.martin.javafx.login.mfl_project.dao.EtiquetaDAO;
+import edu.martin.javafx.login.mfl_project.dao.EtiquetaDAOImpl;
 import edu.martin.javafx.login.mfl_project.dao.PrendaDAO;
 import edu.martin.javafx.login.mfl_project.dao.PrendaDAOImpl;
+import edu.martin.javafx.login.mfl_project.model.Etiqueta;
 import edu.martin.javafx.login.mfl_project.model.Prenda;
 import edu.martin.javafx.login.mfl_project.model.Usuario;
 import javafx.beans.binding.Bindings;
@@ -21,6 +24,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class MainController implements Initializable {
 
@@ -42,7 +46,15 @@ public class MainController implements Initializable {
     @FXML
     private TableColumn<Prenda, String> colCategoria;
 
+    @FXML
+    private TableColumn<Prenda, Number> colNumEtiquetas;
+
+    @FXML
+    private TableColumn<Prenda, String> colEtiquetas;
+
     private final PrendaDAO prendaDAO = new PrendaDAOImpl();
+    private final EtiquetaDAO etiquetaDAO = new EtiquetaDAOImpl();
+
     private Usuario usuarioActual;
     private final ObservableList<Prenda> prendas = FXCollections.observableArrayList();
 
@@ -60,6 +72,9 @@ public class MainController implements Initializable {
                 )
         );
 
+        colNumEtiquetas.setCellValueFactory(new PropertyValueFactory<>("cantidadEtiquetas"));
+        colEtiquetas.setCellValueFactory(new PropertyValueFactory<>("etiquetasResumen"));
+
         tablaPrendas.setItems(prendas);
     }
 
@@ -71,7 +86,19 @@ public class MainController implements Initializable {
 
     private void cargarRopaUsuario() {
         prendas.clear();
-        List<Prenda> lista = prendaDAO.getPrendasPorUsuario(usuarioActual.getId());
+        List<Prenda> lista = prendaDAO.getPrendasDeUsuario(usuarioActual.getId());
+
+        for (Prenda p : lista) {
+            List<Etiqueta> etiquetas = etiquetaDAO.getEtiquetasDePrenda(p.getId());
+            p.setCantidadEtiquetas(etiquetas.size());
+
+            String resumen = etiquetas.stream()
+                    .map(Etiqueta::getNombre)
+                    .collect(Collectors.joining(", "));
+
+            p.setEtiquetasResumen(resumen);
+        }
+
         prendas.addAll(lista);
     }
 
@@ -108,6 +135,37 @@ public class MainController implements Initializable {
         }
     }
 
+    @FXML
+    private void gestionarEtiquetas() {
+        Prenda seleccionada = tablaPrendas.getSelectionModel().getSelectedItem();
+        if (seleccionada == null) {
+            mostrarAviso("Etiquetas", "Selecciona una prenda para gestionar sus etiquetas.");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/edu/martin/javafx/login/mfl_project/etiqueta-view.fxml")
+            );
+            Parent root = loader.load();
+
+            EtiquetaController controller = loader.getController();
+            controller.cargarDatos(seleccionada);
+
+            Stage ventana = new Stage();
+            ventana.initModality(Modality.WINDOW_MODAL);
+            ventana.initOwner(tablaPrendas.getScene().getWindow());
+            ventana.setScene(new Scene(root));
+            ventana.setTitle("Etiquetas de la prenda");
+            ventana.showAndWait();
+
+            cargarRopaUsuario();
+
+        } catch (IOException e) {
+            mostrarAviso("Error", "No se ha podido abrir la ventana de etiquetas.");
+        }
+    }
+
     private void abrirFormularioRopa(Prenda prenda) {
         try {
             FXMLLoader loader = new FXMLLoader(
@@ -128,7 +186,7 @@ public class MainController implements Initializable {
             cargarRopaUsuario();
 
         } catch (IOException e) {
-            mostrarAviso("Error", "No se ha podido abrir el formulario.");
+            mostrarAviso("Error", "No se ha podido abrir el formulario de prenda.");
         }
     }
 
